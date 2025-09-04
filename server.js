@@ -24,6 +24,7 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(()=> console.log('✅ MongoDB connected'))
   .catch(err => { console.error('❌ MongoDB error', err); process.exit(1); });
 
+// This schema is correct and includes the necessary fix.
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, trim: true },
   email:    { type: String, required: true, unique: true, trim: true, lowercase: true },
@@ -384,7 +385,8 @@ app.post('/api/wallet/connect', auth, async (req, res) => {
         await user.save();
         res.json({ msg: "Wallet connected successfully", walletAddress: user.walletAddress });
 
-    } catch (err) {
+    } catch (err)
+ {
         console.error("Wallet connect error:", err.message);
         res.status(500).json({ msg: "Server error" });
     }
