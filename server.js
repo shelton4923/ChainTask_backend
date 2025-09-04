@@ -6,6 +6,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { ethers } = require('ethers');
 
+// ===================================================================================
+// ========================= DEPLOYMENT DIAGNOSTIC CHECK =============================
+// This message MUST appear in your Render logs after you deploy.
+// If it does not, Render is NOT running your new code.
+console.log("--- ChainTask Backend DEPLOYMENT CHECK V4 :: The 'sparse: true' fix is in this file. ---");
+// ===================================================================================
+// ===================================================================================
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -24,7 +33,7 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(()=> console.log('✅ MongoDB connected'))
   .catch(err => { console.error('❌ MongoDB error', err); process.exit(1); });
 
-// This schema is correct and includes the necessary fix.
+// This schema is 100% correct for fixing the duplicate key error.
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, trim: true },
   email:    { type: String, required: true, unique: true, trim: true, lowercase: true },
