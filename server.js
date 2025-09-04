@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, trim: true },
   email:    { type: String, required: true, unique: true, trim: true, lowercase: true },
   password: { type: String, required: true },
-  walletAddress: { type: String, unique: true, sparse: true, default: null }, // Added for wallet linking
+  walletAddress: { type: String, unique: true, sparse: true, default: null }, // sparse: true is the crucial fix
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
@@ -51,7 +51,7 @@ taskSchema.index({ content: 'text', category: 'text', tags: 'text' });
 const Task = mongoose.model('Task', taskSchema);
 
 // -------------------- Blockchain --------------------
-const contractABI =  [
+const contractABI = [
     {
       "inputs": [],
       "stateMutability": "nonpayable",
@@ -362,7 +362,7 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-// -------------------- Wallet Routes (NEW) --------------------
+// -------------------- Wallet Routes --------------------
 app.post('/api/wallet/connect', auth, async (req, res) => {
     try {
         const { walletAddress } = req.body;
@@ -442,7 +442,7 @@ app.post('/api/tasks', auth, async (req, res) => {
     if (!content) return res.status(400).json({ msg: "Task content is required" });
 
     const task = new Task({
-      taskId: taskId || Date.now(), // fallback unique id if frontend doesn’t send
+      taskId: taskId || Date.now(),
       content,
       owner: req.user.id,
       dueDate: dueDate || null,
