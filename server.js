@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5001;
 // Using the more secure CORS policy from your friend's code
 const allowedOrigins = [
   'http://localhost:3000', // For local development
-  'https://chain-task-frontend.vercel.app/', // <<<<<<<<< IMPORTANT: I've put a placeholder. Replace with your actual Vercel frontend URL
+  'https://chain-task-frontend.vercel.app', // <<<<<<<<< IMPORTANT: I've put a placeholder. Replace with your actual Vercel frontend URL
 ];
 
 app.use(cors({
