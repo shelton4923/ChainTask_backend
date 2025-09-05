@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const { ethers } = require('ethers');
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5001;
@@ -18,6 +17,31 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY;
 if (!MONGO_URI) throw new Error("MONGO_URI not set in .env");
 if (!JWT_SECRET) throw new Error("JWT_SECRET not set in .env");
 if (!PRIVATE_KEY) throw new Error("PRIVATE_KEY not set in .env");
+
+// --- CORS Configuration ---
+// Define the list of allowed origins (domains).
+const allowedOrigins = [
+  'https://chain-task-frontend.vercel.app',
+  'http://localhost:3000', // Add other origins if needed, e.g., for local testing
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: 'GET,POST,PUT,DELETE,HEAD,OPTIONS', // Explicitly allow methods
+  allowedHeaders: 'Content-Type,Authorization,x-auth-token' // Explicitly allow headers
+};
+
+app.use(cors(corsOptions));
+// --- End of CORS Configuration ---
 
 // -------------------- Mongoose --------------------
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
