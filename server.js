@@ -247,6 +247,7 @@ const contractABI = [
 // --- 3. SERVER & APP SETUP ---
 const app = express();
 app.use(express.json());
+
 // *** CHANGE FOR DEPLOYMENT ***
 // Explicitly configure CORS to allow requests from your Vercel frontend.
 const corsOptions = {
